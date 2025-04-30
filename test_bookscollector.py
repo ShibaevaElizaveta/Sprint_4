@@ -32,10 +32,16 @@ class TestBooksCollector:
         assert len(collector_with_books.get_books_with_specific_genre(genre)) == expected_count
 
     # 4. Тест для get_books_for_children
-    def test_get_books_for_children(self, collector_with_books):
+    def test_get_books_for_children_includes_safe_genre_comedy(self,collector_with_books):
         children_books = collector_with_books.get_books_for_children()
         assert "Трое в лодке" in children_books
+
+    def test_get_books_for_children_includes_safe_genre_multfilms(self,collector_with_books):
+        children_books = collector_with_books.get_books_for_children()
         assert "Корпорация монстров" in children_books
+
+    def test_get_books_for_children_excludes_age_restricted_genre(self,collector_with_books):
+        children_books = collector_with_books.get_books_for_children()
         assert "Ночной дозор" not in children_books
 
     # 5. Тесты для работы с избранным
@@ -60,9 +66,13 @@ class TestBooksCollector:
         assert empty_collector.get_books_genre() == {"Книга": ""}
 
     # 8. Тест начального состояния
-    def test_initial_state(self, empty_collector):
+    def test_initial_genres(self,empty_collector):
         assert empty_collector.genre == ['Фантастика', 'Ужасы', 'Детективы', 'Мультфильмы', 'Комедии']
+
+    def test_initial_age_restricted_genres(self,empty_collector):
         assert empty_collector.genre_age_rating == ['Ужасы', 'Детективы']
+
+    def test_initial_books_collection_empty(self,empty_collector):
         assert len(empty_collector.get_books_genre()) == 0
 
     # 9. Тест пустого жанра у новой книги
@@ -71,9 +81,12 @@ class TestBooksCollector:
         assert empty_collector.get_book_genre("Тихий Дон") == ""
 
     # 10. Тест для get_list_of_favorites_books с несколькими книгами
-    def test_get_list_of_favorites_books_return_correct_books(self,collector_with_favorites):
+    def test_get_list_of_favorites_books_has_correct_length(self, collector_with_favorites):
         favorites = collector_with_favorites.get_list_of_favorites_books()
         assert len(favorites) == 3
+
+    def test_get_list_of_favorites_books_contains_correct_books(self, collector_with_favorites):
+        favorites = collector_with_favorites.get_list_of_favorites_books()
         assert set(favorites) == {"Мастер и Маргарита", "1984", "Тихий Дон"}
 
     # 11. Тест для пустого списка избранного
