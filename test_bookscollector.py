@@ -69,3 +69,15 @@ class TestBooksCollector:
     def test_new_book_has_empty_genre(self, empty_collector):
         empty_collector.add_new_book("Тихий Дон")
         assert empty_collector.get_book_genre("Тихий Дон") == ""
+
+    # 10. Тест для get_list_of_favorites_books с несколькими книгами
+    def test_get_list_of_favorites_books_return_correct_books(self,collector_with_favorites):
+        favorites = collector_with_favorites.get_list_of_favorites_books()
+        assert len(favorites) == 3
+        assert set(favorites) == {"Мастер и Маргарита", "1984", "Тихий Дон"}
+
+    # 11. Тест для пустого списка избранного
+    def test_get_list_of_favorites_books_empty_list(self,empty_collector):
+        assert empty_collector.get_list_of_favorites_books() == []
+
+
